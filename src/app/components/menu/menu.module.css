@@ -3,6 +3,13 @@
     margin-top: 60px;
   }
   
+  .items {
+    margin-top: 35px;
+    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+  }
   .subtitle {
     color: gray;
     font-size: 16px;

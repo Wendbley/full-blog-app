@@ -1,25 +1,20 @@
-
-import styles from './page.module.css'
-import Navbar from './components/navbar/Navbar'
-import Footer from './components/footer/Footer'
+import styles from './home.module.css'
 import Featured from './components/featured/Featured'
 import CategoryList from './components/categoryList/CategoryList'
 import CardList from './components/cardList/CardList'
-import Pagination from './components/pagination/Pagination'
 import Menu from './components/menu/Menu'
+import Pagination from './components/pagination/Pagination'
 
 export default function Home() {
-  return (
-    <main className={styles.container}>
-      <Featured/>
-      <CategoryList/>
+	return (
+		<main className={styles.container}>
+			<Featured />
+			<CategoryList />
 
-      <div className="container">
-        <CardList/>
-        <Pagination/>
-        <Menu/>
-      </div>
-      
-    </main>
-  )
+			<div className={styles.content}>
+				<CardList />
+				<Menu />
+			</div>
+		</main>
+	)
 }
