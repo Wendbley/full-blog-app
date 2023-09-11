@@ -5,6 +5,7 @@ import facebook from './facebook.png'
 import fashion from './fashion.png'
 import food from './food.png'
 import instagram from './instagram.png'
+import image from './image.png'
 import logo from './logo.png'
 import moon from './moon.png'
 import next from './next.svg'
@@ -26,6 +27,7 @@ export {
     fashion,
     food,
     instagram,
+    image,
     logo,
     moon,
     next,

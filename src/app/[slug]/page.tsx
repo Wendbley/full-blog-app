@@ -3,6 +3,7 @@ import styles from './singlePage.module.css'
 import Image from 'next/image'
 import { p1 } from '../../../public'
 import Menu from '../components/menu/Menu'
+import Comments from '../components/comments/Comments'
 
 type Props = {}
 
@@ -53,6 +54,9 @@ const SinglePage = (props: Props) => {
 							consequuntur fuga saepe nesciunt nisi ipsum, ut dolore!
 						</p>
 					</div>
+                    <div className={styles.comment}>
+                        <Comments/>
+                    </div>
 				</div>
 				<Menu />
 			</div>
