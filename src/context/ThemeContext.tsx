@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 
 interface Props {
 	children: React.ReactNode
@@ -33,6 +33,10 @@ const ThemeContextProvider = ({ children }: Props) => {
         setTheme(newTheme)
         localStorage.setItem('theme', newTheme)
     }
+
+	useEffect(() => {
+		localStorage.setItem("theme", theme!);
+	  }, [theme])
 
 	return (
 		<ThemeContext.Provider value={{ theme, toggleTheme }}>
