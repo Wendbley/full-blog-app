@@ -8,15 +8,21 @@ import { ThemeContext } from '@/context/ThemeContext'
 
 type Props = {}
 
+/**
+ * 
+ * @param props 
+ * @returns 
+ */
 const ThemeToggle = (props: Props) => {
-	const { theme, toggleTheme } = useContext(ThemeContext)
+	const { state, dispatch } = useContext(ThemeContext)
+	console.log(state.theme)
 
 	return (
 		<div
 			className={styles.container}
-			onClick={toggleTheme}
+			onClick={() => dispatch({ type: 'TOGGLE_THEME' })}
 			style={
-				theme === 'dark'
+				state.theme === 'dark'
 					? { background: 'white' }
 					: { background: '#0f172a' }
 			}>
@@ -24,7 +30,7 @@ const ThemeToggle = (props: Props) => {
 			<div
 				className={styles.ball}
 				style={
-					theme === 'dark'
+					state.theme === 'dark'
 						? { left: 1, background: '#0f172a' }
 						: { right: 1, background: 'white' }
 				}></div>
