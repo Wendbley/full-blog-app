@@ -15,7 +15,7 @@ type Props = {}
  */
 const ThemeToggle = (props: Props) => {
 	const { state, dispatch } = useContext(ThemeContext)
-	console.log(state.theme)
+	
 
 	return (
 		<div

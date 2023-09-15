@@ -7,8 +7,14 @@ type Props = {
 	children: React.ReactNode
 }
 
+/**
+ * 
+ * @param param0 
+ * @returns 
+ */
 const ThemeProvider = ({ children }: Props) => {
-	const { theme } = useContext(ThemeContext)
+	const { state } = useContext(ThemeContext)
+	const { theme } = state
 	const [ mounted, setMounted ] = useState(false)
 
 	useEffect(() => {

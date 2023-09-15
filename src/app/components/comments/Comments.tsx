@@ -2,11 +2,47 @@ import Link from 'next/link'
 import styles from './comments.module.css'
 import Image from 'next/image'
 import { p1 } from '../../../../public'
+import { useSession } from 'next-auth/react'
+import useSWR from 'swr'
+import axios from 'axios'
 
-type Props = {}
+type Props = {
+	postSlug: string
+}
+type Comment = {
+	id: string
+	createdAt: string
+	user: {
+		name: string
+		image: string
+	}
+	desc: string
+}
 
-const Comments = (props: Props) => {
-	const status = 'authenticated'
+// collects data from API
+const fetcher = async (url: string) => {
+	const res = await axios(url)
+
+	if (res.statusText != 'OK') {
+		const error = new Error(res.data.message)
+		throw error
+	}
+	return res.data
+}
+
+/**
+ *
+ * @param props
+ * @returns
+ */
+const Comments = async ({ postSlug }: Props) => {
+	const { status } = useSession()
+	const { data, error, isLoading } = useSWR(
+		`${process.env.NEXT_PUBLIC_API_URL}/api/comments?postSlug=${postSlug}`,
+		fetcher
+	)
+
+	if (error) <div className={styles.error}>An error has occured...</div>
 
 	return (
 		<div className={styles.container}>
@@ -21,156 +57,31 @@ const Comments = (props: Props) => {
 			)}
 
 			<div className={styles.comments}>
-				<div className={styles.comment}>
-					<div className={styles.user}>
-						<Image
-							src={p1}
-							alt='img1'
-							width={50}
-							height={50}
-							className={styles.image}
-						/>
+				{isLoading ? (
+					<div className={styles.loading}>Loading...</div>
+				) : (
+					data?.map((item: Comment) => (
+						<div className={styles.comment} key={item.id}>
+							<div className={styles.user}>
+								{item?.user?.image && (
+									<Image
+										src={item.user.image}
+										alt='img1'
+										width={50}
+										height={50}
+										className={styles.image}
+									/>
+								)}
 
-						<div className={styles.userInfo}>
-							<span className={styles.username}>John Doe</span>
-							<span className={styles.date}>12.12.2023</span>
+								<div className={styles.userInfo}>
+									<span className={styles.username}>{item.user.name}</span>
+									<span className={styles.date}>{item.createdAt}</span>
+								</div>
+							</div>
+							<p className={styles.desc}>{item.desc}</p>
 						</div>
-					</div>
-					<p className={styles.desc}>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel cum
-						labore natus explicabo reiciendis sapiente, reprehenderit molestias
-						illum non debitis minus molestiae totam excepturi blanditiis quo
-						aperiam nobis modi, suscipit quia nulla perferendis repudiandae. Ea,
-						voluptatibus eius! Nihil, quam consectetur! Dicta veniam reiciendis
-						inventore consectetur ratione dolore expedita molestias maxime!
-					</p>
-				</div>
-
-				<div className={styles.comment}>
-					<div className={styles.user}>
-						<Image
-							src={p1}
-							alt='img1'
-							width={50}
-							height={50}
-							className={styles.image}
-						/>
-
-						<div className={styles.userInfo}>
-							<span className={styles.username}>John Doe</span>
-							<span className={styles.date}>12.12.2023</span>
-						</div>
-					</div>
-					<p className={styles.desc}>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel cum
-						labore natus explicabo reiciendis sapiente, reprehenderit molestias
-						illum non debitis minus molestiae totam excepturi blanditiis quo
-						aperiam nobis modi, suscipit quia nulla perferendis repudiandae. Ea,
-						voluptatibus eius! Nihil, quam consectetur! Dicta veniam reiciendis
-						inventore consectetur ratione dolore expedita molestias maxime!
-					</p>
-				</div>
-
-				<div className={styles.comment}>
-					<div className={styles.user}>
-						<Image
-							src={p1}
-							alt='img1'
-							width={50}
-							height={50}
-							className={styles.image}
-						/>
-
-						<div className={styles.userInfo}>
-							<span className={styles.username}>John Doe</span>
-							<span className={styles.date}>12.12.2023</span>
-						</div>
-					</div>
-					<p className={styles.desc}>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel cum
-						labore natus explicabo reiciendis sapiente, reprehenderit molestias
-						illum non debitis minus molestiae totam excepturi blanditiis quo
-						aperiam nobis modi, suscipit quia nulla perferendis repudiandae. Ea,
-						voluptatibus eius! Nihil, quam consectetur! Dicta veniam reiciendis
-						inventore consectetur ratione dolore expedita molestias maxime!
-					</p>
-				</div>
-
-				<div className={styles.comment}>
-					<div className={styles.user}>
-						<Image
-							src={p1}
-							alt='img1'
-							width={50}
-							height={50}
-							className={styles.image}
-						/>
-
-						<div className={styles.userInfo}>
-							<span className={styles.username}>John Doe</span>
-							<span className={styles.date}>12.12.2023</span>
-						</div>
-					</div>
-					<p className={styles.desc}>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel cum
-						labore natus explicabo reiciendis sapiente, reprehenderit molestias
-						illum non debitis minus molestiae totam excepturi blanditiis quo
-						aperiam nobis modi, suscipit quia nulla perferendis repudiandae. Ea,
-						voluptatibus eius! Nihil, quam consectetur! Dicta veniam reiciendis
-						inventore consectetur ratione dolore expedita molestias maxime!
-					</p>
-				</div>
-
-				<div className={styles.comment}>
-					<div className={styles.user}>
-						<Image
-							src={p1}
-							alt='img1'
-							width={50}
-							height={50}
-							className={styles.image}
-						/>
-
-						<div className={styles.userInfo}>
-							<span className={styles.username}>John Doe</span>
-							<span className={styles.date}>12.12.2023</span>
-						</div>
-					</div>
-					<p className={styles.desc}>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel cum
-						labore natus explicabo reiciendis sapiente, reprehenderit molestias
-						illum non debitis minus molestiae totam excepturi blanditiis quo
-						aperiam nobis modi, suscipit quia nulla perferendis repudiandae. Ea,
-						voluptatibus eius! Nihil, quam consectetur! Dicta veniam reiciendis
-						inventore consectetur ratione dolore expedita molestias maxime!
-					</p>
-				</div>
-
-				<div className={styles.comment}>
-					<div className={styles.user}>
-						<Image
-							src={p1}
-							alt='img1'
-							width={50}
-							height={50}
-							className={styles.image}
-						/>
-
-						<div className={styles.userInfo}>
-							<span className={styles.username}>John Doe</span>
-							<span className={styles.date}>12.12.2023</span>
-						</div>
-					</div>
-					<p className={styles.desc}>
-						Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel cum
-						labore natus explicabo reiciendis sapiente, reprehenderit molestias
-						illum non debitis minus molestiae totam excepturi blanditiis quo
-						aperiam nobis modi, suscipit quia nulla perferendis repudiandae. Ea,
-						voluptatibus eius! Nihil, quam consectetur! Dicta veniam reiciendis
-						inventore consectetur ratione dolore expedita molestias maxime!
-					</p>
-				</div>
-
+					))
+				)}
 			</div>
 		</div>
 	)

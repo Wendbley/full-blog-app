@@ -1,81 +1,69 @@
 import Link from 'next/link'
 import styles from './categoryList.module.css'
-import { coding, culture, fashion, food, style, travel } from '../../../../public'
+import axios from 'axios'
+import {
+	coding,
+	culture,
+	fashion,
+	food,
+	style,
+	travel,
+} from '../../../../public'
 import Image from 'next/image'
 
-type Props = {}
+type Props = {
+	
+}
+type Category = {
+	id: string
+	title: string
+	slug: string
+	img: string
+}
 
 /**
- * 
- * @param props 
- * @returns 
+ *
+ * @returns
  */
-const CategoryList = (props: Props) => {
+const getData = async () => {
+	const rep = await axios(`${process.env.NEXT_PUBLIC_API_URL}/api/categories`)
+
+	if (rep.statusText != 'OK') {
+		throw new Error('Failded')
+	}
+	return rep.data
+}
+/**
+ *
+ * @param props
+ * @returns
+ */
+const CategoryList = async (props: Props) => {
+	const categories: Category[] = await getData()
+
+
 	return (
 		<div className={styles.container}>
 			<h1 className={styles.title}>Popular Categories </h1>
 			<div className={styles.categories}>
-				
-					<Link href='/blog?cat=style' className= {`${styles.category} ${styles.style}`}>
-						<Image
-							src={style}
-							alt='style'
-							width={32}
-							height={32}
-							className={styles.image}
-						/>
-            Style
+				{categories?.map((item) => (
+					<Link
+						key={item.id}
+						href='/blog?cat=style'
+						className={`${styles.category} ${styles[item.slug]}`}>
+						{item.img && (
+							<Image
+								src={item.img}
+								alt='style'
+								width={32}
+								height={32}
+								className={styles.image}
+							/>
+						)}
+						{item.title}
 					</Link>
-					<Link href='/blog' className= {`${styles.category} ${styles.style}`}>
-						<Image
-							src={culture}
-							alt='culture'
-							width={32}
-							height={32}
-							className={styles.image}
-						/>
-            Culture
-					</Link>
-					<Link href='/blog' className= {`${styles.category} ${styles.style}`}>
-						<Image
-							src={fashion}
-							alt='fashion'
-							width={32}
-							height={32}
-							className={styles.image}
-						/>
-            Fashion
-					</Link>
-					<Link href='/blog' className= {`${styles.category} ${styles.style}`}>
-						<Image
-							src={food}
-							alt='food'
-							width={32}
-							height={32}
-							className={styles.image}
-						/>
-            Food
-					</Link>
-					<Link href='/blog' className= {`${styles.category} ${styles.style}`}>
-						<Image
-							src={travel}
-							alt='travel'
-							width={32}
-							height={32}
-							className={styles.image}
-						/>
-            Travel
-					</Link>
-					<Link href='/blog' className= {`${styles.category} ${styles.style}`}>
-						<Image
-							src={coding}
-							alt='coding'
-							width={32}
-							height={32}
-							className={styles.image}
-						/>
-            Coding
-					</Link>
+				))}
+
 				
 			</div>
 		</div>

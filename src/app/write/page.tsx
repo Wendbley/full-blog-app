@@ -6,12 +6,32 @@ import Image from 'next/image'
 import { external, image, plus, video } from '../../../public'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.bubble.css'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 type Props = {}
 
+/**
+ * 
+ * @param props 
+ * @returns 
+ */
 const WritePage = (props: Props) => {
 	const [open, setOpen] = useState(false)
 	const [value, setValue] = useState('')
+	const router = useRouter()
+	const { status } = useSession()
+
+	if (status === 'loading') {
+		return (
+			<div className={styles.loading}>
+				<h1>Loading...</h1>
+			</div>
+		)
+	}
+	if (status === 'unauthenticated') {
+		router.push('/')
+	}
 
 	const handleSubmit = () => {}
 
